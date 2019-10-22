@@ -11,7 +11,7 @@ source/file2.php
 source/lib/library.php
 ```
 
-The command `directory-sync.sh -i -s ``pwd`` -d /var/www/html` will result in the following files in
+The command ``directory-sync.sh -i -s `pwd` -d /var/www/html`` will result in the following files in
 the destination directory:
 
 ```
@@ -20,7 +20,7 @@ the destination directory:
 /var/www/html/lib/library.php
 ```
 
-Based on [boneskull/hook-line-and-syncer])(https://gist.github.com/boneskull/6d1fc763fa6da4b53c61).
+Based on [boneskull/hook-line-and-syncer](https://gist.github.com/boneskull/6d1fc763fa6da4b53c61).
 
 ## Usage
 
@@ -56,5 +56,5 @@ directory-sync.sh -s `pwd` -d remotehost.com:/var/www/html -i
 Perform an initial sync of the current directory and any subsequent changes to a remote server
 using ssh on port 1027:
 ```
-directory-sync.sh -s `pwd` -d remotehost.com:/var/www/html -r "ssh -p 1027" -i
+directory-sync.sh -s `pwd` -d remotehost.com:/var/www/html -r 'ssh -p 1027' -i
 ```
