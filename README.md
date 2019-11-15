@@ -2,8 +2,9 @@
 
 Tool designed for keeping a remote directory in sync with a git repository in a local directory.
 This is useful for developing code locally and syncing with a web server, similar to WinSCP. Note
-that the contents of the entire source directory is synced into the destination directory.  For
-example, given the following source directory:
+that the contents of the entire source directory is synced into the destination directory but
+directories can be excluded by modifying the `EXCLUDES` array.  For example, given the following
+source directory:
 
 ```
 source/file1.php
@@ -21,6 +22,12 @@ the destination directory:
 ```
 
 Based on [boneskull/hook-line-and-syncer](https://gist.github.com/boneskull/6d1fc763fa6da4b53c61).
+
+## Requires
+
+```
+brew install fswatch
+```
 
 ## Usage
 
