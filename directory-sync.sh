@@ -16,7 +16,7 @@ DESTINATION=
 INITIAL_SYNC=0
 # Remote shell to use for rsync, useful for specifying an alternate ssh port.  Note: This variable
 # must be quoted in the command for quotes to represented properly
-REMOTE_SHELL="-e 'ssh -p 1027'"
+REMOTE_SHELL='ssh -p 22'
 # Clear this to stop removing remote files
 DELETE_REMOTE="--delete"
 
@@ -85,7 +85,7 @@ while getopts "h?d:e:il:p:r:s:" opt; do
             ;;
         n)  DELETE_REMOTE=
             ;;
-        r)  REMOTE_SHELL="-e $OPTARG"
+        r)  REMOTE_SHELL=$OPTARG
             ;;
         s)  SOURCE_DIR=$OPTARG
             ;;
@@ -110,14 +110,20 @@ last_char=${SOURCE_DIR:${#SOURCE_DIR}-1:1}
 
 # Note that REMOTE_SHELL is in quotes as this string will likely contain quotes.
 if [ 1 -eq $INITIAL_SYNC ]; then
-    rsync -auq --stats --copy-unsafe-links --exclude-from=${EXCLUDES_FILE} ${DELETE_REMOTE} "${REMOTE_SHELL}" ${LOG_FILE} ${SOURCE_DIR} ${DESTINATION}
+    rsync -auq --stats --copy-unsafe-links --exclude-from=${EXCLUDES_FILE} ${DELETE_REMOTE} -e "${REMOTE_SHELL}" ${LOG_FILE} ${SOURCE_DIR} ${DESTINATION}
 fi
 
 # Every time we notice a change in the watched directory, do an rsync to the destination. With -o we
 # are printing the number of changes that ocurred and we can use this to run rsync once per batch
 # rather than once per file.
 
-fswatch -o -0 -e "*.swp" -e ".git*" "${SOURCE_DIR}" | while read -d "" num; do
-    # Note that REMOTE_SHELL is in quotes as this string will likely contain quotes.
-    rsync -auq --stats --copy-unsafe-links --exclude-from=${EXCLUDES_FILE} ${DELETE_REMOTE} "${REMOTE_SHELL}" ${LOG_FILE} ${SOURCE_DIR} ${DESTINATION}
+# VSCode file edits stopped generating fswatch events. Sync every 10 seconds instead.
+# fswatch -o -0 -e "*.swp" -e ".git*" "${SOURCE_DIR}" | while read -d "" num; do
+#     # Note that REMOTE_SHELL is in quotes as this string will likely contain quotes.
+#     rsync -auq --stats --copy-unsafe-links --exclude-from=${EXCLUDES_FILE} ${DELETE_REMOTE} -e "${REMOTE_SHELL}" ${LOG_FILE} ${SOURCE_DIR} ${DESTINATION}
+# done
+
+while [ 1 -eq 1 ]; do
+    rsync -auq --stats --copy-unsafe-links --exclude-from=${EXCLUDES_FILE} ${DELETE_REMOTE} -e "${REMOTE_SHELL}" ${LOG_FILE} ${SOURCE_DIR} ${DESTINATION}
+    sleep 10
 done
