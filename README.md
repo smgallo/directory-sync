@@ -65,3 +65,7 @@ using ssh on port 1027:
 ```
 directory-sync.sh -s `pwd` -d remotehost.com:/var/www/html -r 'ssh -p 1027' -i
 ```
+
+```
+bash ~/src/directory-sync/directory-sync.sh -i -r 'ssh -p 1027' -s `pwd`/ -d clinicalwebdev:/var/www/html/clinicalreportingdev10  >& /tmp/filesync-clinicalwebdev.log
+```
